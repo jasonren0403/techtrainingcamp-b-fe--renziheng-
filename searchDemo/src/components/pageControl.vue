@@ -1,16 +1,19 @@
 <template>
 	<div id="page-controls" ref="control">
 		<div id="page-controls-wrapper">
-			<a href="javascript:this.backToFirstPage(current_kw);"><span class="iconfont icondiyiye"></span></a>
-			<a href="javascript:this.performPageControl(this.cur_page-1,current_kw);"><span
+			<router-link :to="{name:'search_result',params:{kw:current_kw,page:1}}">
+				<span class="iconfont icondiyiye" v-bind:class="[cur_page===1?'disabled-page-control':'']"></span>
+			</router-link>
+			<router-link :to="{name:'search_result',params:{kw:current_kw,page:cur_page-1}}"><span
 				class="iconfont iconzuojiantou"
-				v-bind:class="[cur_page===1?'disabled-page-control':'']"></span></a>
+				v-bind:class="[cur_page===1?'disabled-page-control':'']"></span></router-link>
 			<span>第{{cur_page}}页/共{{max_page}}页</span>
-			<a href="javascript:this.performPageControl(this.cur_page+1,this.current_kw);"><span
+			<router-link :to="{name:'search_result',params:{kw:current_kw,page:cur_page+1}}"><span
 				class="iconfont iconyoujiantou"
-				v-bind:class="[cur_page===max_page?'disabled-page-control':'']"></span></a>
-			<a href="javascript:this.scrollToLastPage(this.current_kw);"><span
-				class="iconfont iconzuihouyiye"></span></a>
+				v-bind:class="[cur_page===max_page?'disabled-page-control':'']"></span></router-link>
+			<router-link :to="{name:'search_result',params:{kw:current_kw,page:max_page}}"><span
+				class="iconfont iconzuihouyiye" v-bind:class="[cur_page===max_page?'disabled-page-control':'']"></span>
+			</router-link>
 		</div>
 	</div>
 </template>
@@ -19,11 +22,6 @@
 	export default {
 		name: "pageControl",
 		props: {
-			cur_page: {
-				type: Number,
-				required: true,
-				default: 1
-			},
 			max_page: {
 				type: Number,
 				required: true,
@@ -33,33 +31,23 @@
 		computed: {
 			current_kw() {
 				return this.$route.params.kw || '';
+			},
+			cur_page: {
+				get() {
+					return Number(this.$route.params.page) || 1;
+				},
+				set(val) {
+					this.cur_page = this.$route.params.page || val || 1;
+				}
 			}
 		},
-		methods: {
-			backToFirstPage(kw) {
-				alert(`back to first page control ${this.current_kw}`)
-				this.performPageControl(1, kw);
-			},
-			scrollToLastPage(kw) {
-				alert(`scroll to last page control ${this.current_kw}`)
-				this.performPageControl(this.max_page, kw);
-			},
-			performPageControl(pp, kw) {
-				alert(`perform page control ${this.current_kw}`)
-				this.$router.push({
-					name: 'search_result',
-					params: {
-						kw: kw,
-						page: pp
-					}
-				})
-				this.cur_page = pp;
-				this.$emit('pageChange', pp, kw);
-			},
+		watch: {
+			'$route'(to, from) {
+				console.log("[PageControl] From " + from.params.page);
+				console.log("[PageControl] To " + to.params.page);
+				this.$emit('pageChange', to.params.kw || '');
+			}
 		}
-		// created() {
-		// 	console.log(this.cur_page,this.max_page)
-		// }
 	}
 </script>
 
@@ -82,5 +70,10 @@
 	.disabled-page-control {
 		color: gray;
 		cursor: not-allowed;
+	}
+
+	a, .router-link-active, a:active, a:hover {
+		color: black;
+		text-decoration: none;
 	}
 </style>

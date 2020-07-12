@@ -27,7 +27,7 @@
 		<div class="clearfix"></div>
 		<div class="tags" v-if="item.tags && item.tags.length!==0">
 			<div class="badge-wrapper" v-for="tag in item.tags">
-				<span v-bind:class="[special.find(v=>v === tag)?'badge-green':'badge']">{{tag}}</span>
+				<span class="badge-basic" v-bind:class="[special.badges.find(v=>v === tag)?'badge-green':'badge']">{{tag}}</span>
 			</div>
 		</div>
 		<div class="clearfix"></div>
@@ -45,7 +45,20 @@
 		},
 		data() {
 			return {
-				special: ["任子恒", "Jason Ren", "Vue.js", "Vue", "HTML5", "CSS3", "CSS 3", "JavaScript", "javascript"]
+				special: {
+					// 这里放彩蛋！
+					// badges - 标签含有特定值时，显示将与其他标签不同
+					"badges": ["任子恒", "Jason Ren", "Vue.js", "Vue", "HTML5",
+						"CSS3", "CSS 3", "JavaScript", "javascript", "字节跳动", "bytedance", "Bytedance"],
+					// 有时间我就放这个↓
+					// "badges":{
+					// 	"badge-green":["任子恒","Jason Ren"],
+					// 	"badge-blue":["Vue.js","Vue","Node.js","HTML5","HTML 5","CSS3","CSS 3","javascript","JavaScript"],
+					// 	"badge-red":["bytedance","字节跳动","Bytedance"]
+					// },
+					// animations - 当使用这些词语作为查询词时，页面将显示特定动画
+					"animations": ["bytedance", "字节跳动", "前端训练营"]
+				}
 			}
 		},
 		methods: {},
@@ -94,34 +107,27 @@
 </script>
 
 <style scoped>
-	.badge-green {
-		background-color: #01ff35;
+	.badge-basic {
 		display: inline-block;
 		min-width: 10px;
 		padding: 3px 7px;
 		font-size: 12px;
 		font-weight: bold;
 		line-height: 1;
-		color: #fff;
 		text-align: center;
 		white-space: nowrap;
 		vertical-align: baseline;
 		border-radius: 10px;
 	}
 
-	.badge {
-		display: inline-block;
-		min-width: 10px;
-		padding: 3px 7px;
-		font-size: 12px;
-		font-weight: bold;
-		line-height: 1;
+	.badge-green {
+		background-color: #01ff35;
 		color: #fff;
-		text-align: center;
-		white-space: nowrap;
-		vertical-align: baseline;
+	}
+
+	.badge {
+		color: #fff;
 		background-color: #999;
-		border-radius: 10px;
 	}
 
 	.badge:empty, .badge-green:empty {

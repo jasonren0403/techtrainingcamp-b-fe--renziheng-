@@ -1,28 +1,33 @@
 <template>
-	<div id="searchForm">
+	<div @blur="[toggleStyle('outfocus'),search_performed = false]" @focus="toggleStyle('focused')"
+		 @keydown.enter="subSearch(searchtxt)"
+		 id="searchForm">
 		<div id="form-wrap">
 			<div id="input-wrap" v-bind:class="colorstyle" v-bind:style="{display:'inline'}">
 				<span class="search-logo iconfont iconfangdajing"></span>
-				<input @blur="[toggleStyle('outfocus'),search_performed = false]"
-					   @focus="toggleStyle('focused')" autocomplete="off"
-					   id="searchWord" maxlength="100" placeholder="请输入要查找的关键词" type="text"
-					   v-bind:style="{border:'none'}" v-model="searchtxt">
-				<button id="search_button" @click.stop="subSearch(searchtxt)" type="button">Go!</button>
+				<input @focus="[toggleStyle('focused'),search_performed=false]"
+					   autocomplete="off" id="searchWord" maxlength="100" placeholder="请输入要查找的关键词"
+					   type="text" v-bind:style="{border:'none'}"
+					   v-model="searchtxt">
+				<button @click.stop="subSearch(searchtxt)" id="search_button" type="button">Go!</button>
 			</div>
 			<div class="clearfix"></div>
 		</div>
-		<div class="notice" v-bind:style="{color:'red'}" v-if="searchtxt.length===0&&search_performed">还没有输入任何东西呢~</div>
-		<div id="recommended" v-if="list_available">
-			<div class="notice" v-bind:style="{color:'red'}" v-if="error_fetching_list">获取推荐词列表时出错</div>
-			<div class="notice" v-bind:style="{color:'grey'}" v-else-if="list.length===0&&search_performed">
-				还未找到内容，再试试？
-			</div>
-			<div class="list-wrapper" v-bind:style="{display:'block'}" v-else>
-				<ul v-if="list_available&&search_performed">
+		<div id="recommended" v-if="display_recommend_list">
+			<div class="list-wrapper">
+				<ul v-if="search_performed">
 					<li :key="item.keyword" @click="subSearch(item.keyword)" v-for="item in list">
 						{{item.keyword}}
 					</li>
 				</ul>
+			</div>
+		</div>
+		<div class="notice-area" v-else>
+			<div class="notice" v-bind:style="{color:'red'}" v-if="searchtxt.length===0&&search_performed">还没有输入任何东西呢~
+			</div>
+			<div class="notice" v-bind:style="{color:'red'}" v-else-if="error_fetching_list">获取推荐词列表时出错</div>
+			<div class="notice" v-bind:style="{color:'grey'}" v-else-if="list.length===0&&search_performed">
+				还未找到内容，再试试？
 			</div>
 		</div>
 	</div>
@@ -35,13 +40,18 @@
 			return {
 				searchtxt: '',
 				error_fetching_list: false,
-				// list_available: false,
-				// list: [],
+				list_available: false,
+				list: [],
 				// next two lines is for test, not used in production
-				list: [{keyword: 'sample'}, {keyword: 'sample2'}],
-				list_available: true,
+				// list: [{keyword: 'sample'}, {keyword: 'sample2'}],
+				// list_available: true,
 				search_performed: false,
-				colorstyle: 'outfocus'
+				colorstyle: 'outfocus',
+			}
+		},
+		computed: {
+			display_recommend_list() {
+				return this.list_available && this.list.length > 0 /*&& this.$route.fullPath.indexOf('searchResult') === -1*/
 			}
 		},
 		watch: {
@@ -88,10 +98,14 @@
 		},
 		methods: {
 			subSearch: function (kw) {
-				/* fetch result from api with this.searchtxt, then jump to result page
-				 */
+				// fetch result from api with this.searchtxt, then jump to result page
 				this.search_performed = true;
-				if (typeof kw != 'undefined' && kw.length !== 0)
+				// clear the search list
+				this.list = [];
+				this.list_available = false;
+				if (typeof kw != 'undefined' && kw.length !== 0) {
+					this.toggleStyle('succeed');
+					this.searchtxt = '';
 					this.$router.push({
 						name: 'search_result',
 						params: {
@@ -99,11 +113,11 @@
 							page: 1
 						}
 					});
-				else if (!this.show_len_error) {
-					this.$data.show_not_found = false;
-					this.$data.show_len_error = true;
-					this.toggleStyle('failed');
+					return;
 				}
+
+				this.toggleStyle('failed');
+
 			},
 			toggleStyle: function (_nstyle) {
 				if (this.colorstyle === 'outfocus') {
@@ -114,7 +128,6 @@
 					this.searchtxt = '';
 					this.list = [];
 				}
-				this.show_len_error = false;
 				this.colorstyle = _nstyle;
 				this.list_available = _nstyle !== 'outfocus';
 			}
@@ -135,30 +148,37 @@
 	}
 
 	.list-wrapper > ul {
-		background-color: aqua;
-		width: 370px;
+		background-color: white;
+		width: 360px;
 		position: relative;
-		left: 434px;
+		left: 438px;
 		top: -26px;
 		border-left: 1px solid blue;
 		border-bottom: 1px solid blue;
 		border-right: 1px solid blue;
 	}
 
+	.list-wrapper > ul:empty {
+		display: none;
+	}
+
 	li {
 		list-style-type: none;
 		font-size: 0.8em;
-		margin-top: 0.25em;
+		margin: 0.25em;
+		padding: 0.25em;
 		text-align: left;
 		max-width: 375px;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+		z-index: auto;
 	}
 
 	li:hover {
 		cursor: pointer;
-		background: #b6bca5
+		background: #dceecd;
+		box-shadow: #999999;
 	}
 
 	#recommended {

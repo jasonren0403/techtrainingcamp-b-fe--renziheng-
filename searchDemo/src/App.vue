@@ -25,6 +25,9 @@
 			pageControl,
 			searchResultItem,
 			searchResult
+		},
+		mounted() {
+			document.title = 'searchDemo - A simple webpage for searching';
 		}
 	}
 </script>

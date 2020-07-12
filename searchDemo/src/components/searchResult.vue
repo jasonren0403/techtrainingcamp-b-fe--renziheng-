@@ -35,7 +35,7 @@
 		},
 		methods: {
 			fetchResult(offset) {
-				console.log('offset: ' + offset);
+				console.log('[fetchResult] offset: ' + offset);
 				const keyword = (this.$route.params.kw === undefined) ? '' : this.$route.params.kw;
 				const that = this;
 				if (keyword.length > 0) {
@@ -63,8 +63,9 @@
 		},
 		watch: {
 			'$route'(to, from) {
-				console.log(this.$route.params);
-				this.fetchResult(this.$route.params.page || 0);
+				console.log("[SearchResult] From " + from.params.page);
+				this.fetchResult(to.params.page || 0);
+				console.log("[SearchResult] new result fetched: page " + to.params.page);
 			}
 		}
 	}
