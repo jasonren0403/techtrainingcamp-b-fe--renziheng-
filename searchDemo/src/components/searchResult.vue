@@ -1,0 +1,75 @@
+<template>
+	<div id="searchResult" v-bind:style="{'min-height':'400px'}" @pageChange="pageChange">
+		<div id="search-msg">{{msg}}</div>
+		<search-result-item :item="data"
+							:key="data.create_time"
+							v-for="data in result">
+		</search-result-item>
+		<page-control :cur_page='cur_page' :max_page='max_page'></page-control>
+	</div>
+</template>
+
+<script>
+	import searchResultItem from "./searchResultItem";
+	import pageControl from "./pageControl";
+
+	export default {
+		name: "search-result",
+		components: {
+			pageControl, searchResultItem
+		},
+		created() {
+			console.log('loading');
+			const offset = Number(this.$route.params.page) - 1 || 0;
+			this.fetchResult(offset);
+			this.keyword = (this.$route.params.kw === undefined) ? '' : this.$route.params.kw;
+		},
+		data() {
+			return {
+				cur_page: 1,
+				max_page: 1,
+				result: [],
+				msg: "",
+				keyword: ""
+			}
+		},
+		methods: {
+			fetchResult(offset) {
+				console.log('offset: ' + offset);
+				const keyword = (this.$route.params.kw === undefined) ? '' : this.$route.params.kw;
+				const that = this;
+				if (keyword.length > 0) {
+					this.$axios.get('https://i.snssdk.com/search/api/study/', {
+						params: {keyword: keyword, offset: offset}
+					}).then(function (response) {
+						if (response.data && response.data.code === 0) {
+							console.log(response.data.data);
+							const total = response.data.total;
+							that.result = response.data.data;
+							that.max_page = Math.ceil(total / 10); //10 results per page\
+							that.cur_page = Math.min(offset + 1, that.max_page);
+							// that.msg = keyword + '的搜索结果';
+							document.title = 'searchDemo - ' + keyword + '的搜索结果';
+						}
+					}).catch(function (error) {
+						console.log(error);
+					})
+				}
+			},
+			pageChange(page, keyword) {
+				console.log('received emit pageChange from &lt;pageControl&gt;');
+				this.fetchResult(page - 1 || 0);
+			}
+		},
+		watch: {
+			'$route'(to, from) {
+				console.log(this.$route.params);
+				this.fetchResult(this.$route.params.page || 0);
+			}
+		}
+	}
+</script>
+
+<style scoped>
+
+</style>
