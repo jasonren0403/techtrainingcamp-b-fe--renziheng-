@@ -2,7 +2,7 @@
 	<div id="result_item">
 		<h3><a :href="item.link_url" target="_blank">{{item.title}}</a>
 			<a :href="item.link_url" target="_blank">
-				<span class="small">&nbsp;&nbsp;View more...</span>
+				<span class="small">&nbsp;&nbsp;详情...</span>
 			</a>
 		</h3>
 		<div class="abstract">{{item.description}}</div>
@@ -149,13 +149,17 @@
 		float: right;
 	}
 
-
 	.info-span {
 		margin-left: 0.7em;
 	}
 
 	.abstract {
 		line-height: 1.4em;
+		/* 两端对齐文字，最后一行左对齐 */
+		text-justify: distribute-all-lines;
+		-ms-text-align-last: left;
+		text-align: justify;
+		-moz-text-align-last: left;
 	}
 
 	#result_item {
@@ -165,6 +169,32 @@
 		width: 600px;
 		padding: 0.2em;
 	}
+
+	@media screen and (max-width: 360px) {
+		#result_item {
+			margin-left: 1em;
+			padding-left: 1.5em;
+			max-width: 85%;
+		}
+	}
+
+	@media screen and (min-width: 361px) and (max-width: 480px) {
+		#result_item {
+			margin-right: 1em;
+			margin-left: 2em;
+			max-width: 85%;
+		}
+	}
+
+	@media screen and (min-width: 481px) and (max-width: 690px) {
+		#result_item {
+			margin-left: 3em;
+			max-width: 85%;
+			padding: 0.4em;
+		}
+	}
+
+
 
 
 </style>

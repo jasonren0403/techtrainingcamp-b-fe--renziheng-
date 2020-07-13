@@ -3,18 +3,19 @@
 	<router-link to="/"><h1>小小搜索</h1></router-link>
 	<search-form></search-form>
 	<router-view></router-view>
+
 	<search-result v-if="this.$route.params.kw!==undefined&&this.$route.params.kw.length>0"></search-result>
 	<page-footer></page-footer>
 </div>
 </template>
 
 <script>
-	import searchForm from './components/searchForm';
-	import PageFooter from "./components/pageFooter";
-	import fallbackPage from "./components/fallbackPage";
-	import pageControl from "./components/pageControl";
-	import searchResultItem from "./components/searchResultItem";
-	import searchResult from "./components/searchResult";
+	const searchForm = () => import('./components/searchForm');
+	const PageFooter = () => import ("./components/pageFooter");
+	const fallbackPage = () => import ("./components/fallbackPage");
+	const pageControl = () => import ("./components/pageControl");
+	const searchResultItem = () => import ("./components/searchResultItem");
+	const searchResult = () => import("./components/searchResult");
 
 	export default {
 		name: 'App',

@@ -179,6 +179,7 @@
 		cursor: pointer;
 		background: #dceecd;
 		box-shadow: #999999;
+		color: cadetblue;
 	}
 
 	#recommended {
@@ -217,7 +218,6 @@
 		border-radius: 1em 1em 1em 1em;
 	}
 
-	/* todo: breakpoint css style for mobile */
 	#search_button {
 		position: relative;
 		right: -10px;
@@ -232,12 +232,37 @@
 		color: white;
 	}
 
-	/*@media screen and ()*/
-
-
 	#search_button:active {
 		border: none;
 		outline: none;
 	}
+
+	@media screen and (max-width: 360px) {
+		input {
+			width: 200px;
+		}
+
+		#search_button {
+			padding: 5px 10px;
+		}
+
+		#input-wrap {
+			padding: 5px 5px 5px 3px;
+		}
+	}
+
+	@media screen and (min-width: 361px) and (max-width: 482px) {
+		input {
+			width: 275px;
+		}
+	}
+
+	@media screen and (min-width: 483px) and (max-width: 767px) {
+		input {
+			width: 325px;
+		}
+	}
+
+
 
 </style>

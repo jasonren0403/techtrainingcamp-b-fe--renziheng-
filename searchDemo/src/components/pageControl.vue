@@ -1,6 +1,6 @@
 <template>
-	<div id="page-controls" ref="control">
-		<div id="page-controls-wrapper">
+	<div id="page-controls-wrapper" ref="control">
+		<div id="page-controls">
 			<router-link :to="{name:'search_result',params:{kw:current_kw,page:1}}">
 				<span class="iconfont icondiyiye" v-bind:class="[cur_page===1?'disabled-page-control':'']"></span>
 			</router-link>
@@ -53,18 +53,14 @@
 
 <style scoped>
 	#page-controls {
-		color: black;
-		margin: 2em;
-		padding: 2em;
+		margin: 2em 0;
+		padding: 2em 0;
 	}
 
 	#page-controls-wrapper {
-		position: relative;
-		left: 420px;
-		width: 350px;
 		padding: 1em;
-		border: 1px solid black;
-		border-radius: 1em;
+		display: inline;
+		text-align: center;
 	}
 
 	.disabled-page-control {
@@ -75,5 +71,15 @@
 	a, .router-link-active, a:active, a:hover {
 		color: black;
 		text-decoration: none;
+	}
+
+	@media screen and (max-width: 767px) {
+		#page-controls {
+			width: 300px;
+		}
+
+		#page-controls-wrapper {
+
+		}
 	}
 </style>

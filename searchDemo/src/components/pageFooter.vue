@@ -54,4 +54,14 @@
 		background-color: #b6bca5;
 		box-shadow: #ddd9c3;
 	}
+
+	@media screen and (max-width: 767px) {
+		.footer {
+			margin-top: 2em;
+		}
+
+		.author-area {
+			padding: 0.1em 0.5em;
+		}
+	}
 </style>
