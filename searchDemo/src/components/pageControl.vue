@@ -53,8 +53,8 @@
 
 <style scoped>
 	#page-controls {
-		margin: 2em 0;
-		padding: 2em 0;
+		margin: 0.5em 0;
+		padding: 0.5em 0;
 	}
 
 	#page-controls-wrapper {
@@ -73,13 +73,4 @@
 		text-decoration: none;
 	}
 
-	@media screen and (max-width: 767px) {
-		#page-controls {
-			width: 300px;
-		}
-
-		#page-controls-wrapper {
-
-		}
-	}
 </style>
