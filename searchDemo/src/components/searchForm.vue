@@ -5,12 +5,13 @@
 		<div id="form-wrap">
 			<div id="input-wrap" v-bind:class="colorstyle" v-bind:style="{display:'inline'}">
 				<span class="search-logo iconfont iconfangdajing"></span>
-				<input @focus="[toggleStyle('focused'),search_performed=false,placeholder = '']"
+				<input :placeholder="placeholder"
 					   @blur="placeholder = '请输入要查找的关键词'"
-					   autocomplete="off" id="searchWord" maxlength="100" :placeholder="placeholder"
+					   @focus="[toggleStyle('focused'),search_performed=false]" autocomplete="off" id="searchWord"
+					   maxlength="100"
 					   type="text" v-bind:style="{border:'none'}"
 					   v-model="searchtxt">
-				<button @click.stop="[subSearch(searchtxt),toggleStyle('succeed')]" id="search_button" type="button">
+				<button @click.stop="subSearch(searchtxt)" id="search_button" type="button">
 					Go!
 				</button>
 			</div>
@@ -138,6 +139,18 @@
 				}
 				this.colorstyle = _nstyle;
 				this.list_available = _nstyle !== 'outfocus';
+				switch (_nstyle) {
+					case 'outfocus':
+						this.placeholder = '请输入要查找的关键词';
+						break;
+					case 'failed':
+						this.placeholder = '请重新输入关键词';
+						break;
+					case 'succeed':
+					default:
+						this.placeholder = '';
+						break;
+				}
 			},
 			debouncedSubSearch() {
 
@@ -289,7 +302,6 @@
 			width: 325px;
 		}
 	}
-
 
 
 </style>

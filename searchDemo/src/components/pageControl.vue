@@ -22,7 +22,7 @@
 	export default {
 		name: "pageControl",
 		props: {
-			max_page: {
+			max_page: {   // for max_page prop we can do a lot to optimize that... like storing with states like vuex
 				type: Number,
 				required: true,
 				default: 1
