@@ -24,7 +24,7 @@
 			searchForm,
 			fallbackPage,
 			pageControl,
-			searchResultItem,
+			// searchResultItem,
 			searchResult
 		},
 		mounted() {

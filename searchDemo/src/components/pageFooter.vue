@@ -25,7 +25,7 @@
 		},
 		data() {
 			return {
-				tool: 'Vue.js & node.js',
+				tool: 'Vue.js & Node.js',
 				author: 'Jason Ren'
 			}
 		}

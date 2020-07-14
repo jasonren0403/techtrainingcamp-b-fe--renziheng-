@@ -45,7 +45,7 @@ export default new Router({
 			}
 		}
 	],
-	mode: 'history',
+	// mode: 'history',
 	base: '/',
-	fallback: true,
+	// fallback: true,
 })

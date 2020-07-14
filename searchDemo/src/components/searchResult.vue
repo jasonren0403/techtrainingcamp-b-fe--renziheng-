@@ -1,14 +1,13 @@
 <template>
 	<div @pageChange="pageChange" id="searchResult" v-bind:style="{'min-height':'400px'}">
-		<transition name="fadein">
-			<div v-if="result&&result.length > 0">
-				<search-result-item :item="data"
-									:key="data.create_time"
-									v-for="data in result">
-				</search-result-item>
-			</div>
-			<div id="search-msg" v-else>{{msg}}</div>
-		</transition>
+		<div v-if="result&&result.length > 0" :key="1">
+			<search-result-item :item="data"
+								:key="data.create_time"
+								v-for="data in result">
+			</search-result-item>
+		</div>
+		<div id="search-msg" v-else :key="2">{{msg}}</div>
+
 		<page-control :cur_page='cur_page' :max_page='max_page'></page-control>
 	</div>
 </template>

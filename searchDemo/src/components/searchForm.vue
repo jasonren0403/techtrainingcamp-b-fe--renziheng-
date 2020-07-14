@@ -5,11 +5,14 @@
 		<div id="form-wrap">
 			<div id="input-wrap" v-bind:class="colorstyle" v-bind:style="{display:'inline'}">
 				<span class="search-logo iconfont iconfangdajing"></span>
-				<input @focus="[toggleStyle('focused'),search_performed=false]"
-					   autocomplete="off" id="searchWord" maxlength="100" placeholder="请输入要查找的关键词"
+				<input @focus="[toggleStyle('focused'),search_performed=false,placeholder = '']"
+					   @blur="placeholder = '请输入要查找的关键词'"
+					   autocomplete="off" id="searchWord" maxlength="100" :placeholder="placeholder"
 					   type="text" v-bind:style="{border:'none'}"
 					   v-model="searchtxt">
-				<button @click.stop="subSearch(searchtxt)" id="search_button" type="button">Go!</button>
+				<button @click.stop="[subSearch(searchtxt),toggleStyle('succeed')]" id="search_button" type="button">
+					Go!
+				</button>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -23,7 +26,8 @@
 			</div>
 		</div>
 		<div class="notice-area" v-else>
-			<div class="notice" v-bind:style="{color:'red'}" v-if="searchtxt.length===0&&search_performed">还没有输入任何东西呢~
+			<div class="notice" v-bind:style="{color:'red'}" v-if="searchtxt.trim().length===0&&search_performed">
+				还没有输入任何文字呢~
 			</div>
 			<div class="notice" v-bind:style="{color:'red'}" v-else-if="error_fetching_list">获取推荐词列表时出错</div>
 			<div class="notice" v-bind:style="{color:'grey'}" v-else-if="list.length===0&&search_performed">
@@ -47,22 +51,25 @@
 				// list_available: true,
 				search_performed: false,
 				colorstyle: 'outfocus',
+				placeholder: ''
 			}
 		},
 		computed: {
 			display_recommend_list() {
-				return this.list_available && this.list.length > 0 /*&& this.$route.fullPath.indexOf('searchResult') === -1*/
+				return this.list_available && this.list.length > 0
 			}
 		},
 		watch: {
 			searchtxt: function (newval, oldval) {
 				this.search_performed = false;
 				this.error_fetching_list = false;
-				if (newval.length === 0) {
+				if (newval.trim().length === 0) {
 					if (this.list_available) {
 						this.list_available = false;
 					}
-					this.toggleStyle('failed');
+					if (this.search_performed) {
+						this.toggleStyle('failed');
+					}
 					this.list = [];
 					return;
 				}
@@ -71,6 +78,7 @@
 					this.search_performed = true;
 					//search recommend word with newval, then update #recommend element with returned api data
 					const that = this;
+					// search action should be debounced
 					this.$axios.get('https://i.snssdk.com/search/api/sug/', {
 						params: {keyword: newval}
 					}).then(function (response) {
@@ -130,6 +138,9 @@
 				}
 				this.colorstyle = _nstyle;
 				this.list_available = _nstyle !== 'outfocus';
+			},
+			debouncedSubSearch() {
+
 			}
 		}
 	}
@@ -147,22 +158,28 @@
 		margin-right: 4px;
 	}
 
-	.list-wrapper > ul {
-		background-color: white;
-		width: 360px;
+	.list-wrapper {
 		position: relative;
-		left: 438px;
-		top: -26px;
+		display: inline-block;
+	}
+
+	.list-wrapper > ul {
+		position: relative;
+		display: inline-block;
+		background-color: white;
 		border-left: 1px solid blue;
 		border-bottom: 1px solid blue;
 		border-right: 1px solid blue;
+		width: 350px;
+		left: -15px;
+		top: -15px;
 	}
 
 	.list-wrapper > ul:empty {
 		display: none;
 	}
 
-	li {
+	.list-wrapper > ul > li {
 		list-style-type: none;
 		font-size: 0.8em;
 		margin: 0.25em;
@@ -186,12 +203,8 @@
 		z-index: 999;
 	}
 
-	#recommended > .notice, .notice {
+	.notice {
 		padding-top: 0.4em;
-	}
-
-	#recommended > .list-wrapper {
-		padding: 10px 0 12px 14px
 	}
 
 	#input-wrap {
@@ -237,7 +250,12 @@
 		outline: none;
 	}
 
-	@media screen and (max-width: 360px) {
+	@media screen and (max-width: 361px) {
+		.list-wrapper > ul {
+			width: 175px;
+			left: -5px;
+		}
+
 		input {
 			width: 200px;
 		}
@@ -251,13 +269,22 @@
 		}
 	}
 
-	@media screen and (min-width: 361px) and (max-width: 482px) {
+	@media screen and (min-width: 362px) and (max-width: 482px) {
+		.list-wrapper > ul {
+			width: 225px;
+		}
+
 		input {
-			width: 275px;
+			width: 250px;
 		}
 	}
 
 	@media screen and (min-width: 483px) and (max-width: 767px) {
+		.list-wrapper > ul {
+			width: 295px;
+			left: -15px;
+		}
+
 		input {
 			width: 325px;
 		}
