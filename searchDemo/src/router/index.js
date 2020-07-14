@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import searchResult from "../components/searchResult";
-import pageControl from "../components/pageControl";
-import fallbackPage from "../components/fallbackPage";
+
+const fallbackPage = () => import ("../components/fallbackPage");
+const searchResult = () => import("../components/searchResult");
+const pageControl = () => import( "../components/pageControl");
 
 Vue.use(Router)
 

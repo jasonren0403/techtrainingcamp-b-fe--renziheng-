@@ -13,8 +13,6 @@
 	const searchForm = () => import('./components/searchForm');
 	const PageFooter = () => import ("./components/pageFooter");
 	const fallbackPage = () => import ("./components/fallbackPage");
-	const pageControl = () => import ("./components/pageControl");
-	const searchResultItem = () => import ("./components/searchResultItem");
 	const searchResult = () => import("./components/searchResult");
 
 	export default {
@@ -23,8 +21,6 @@
 			PageFooter,
 			searchForm,
 			fallbackPage,
-			pageControl,
-			// searchResultItem,
 			searchResult
 		},
 		mounted() {
