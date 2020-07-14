@@ -8,7 +8,6 @@ import axios from 'axios'
 Vue.prototype.$axios = axios;
 Vue.config.productionTip = false
 
-
 /* eslint-disable no-new */
 new Vue({
 	el: '#app',
@@ -16,3 +15,6 @@ new Vue({
 	components: {App},
 	template: '<App/>'
 })
+
+
+// optimization - throttling and debouncing function is going to be extracted from Vue components

@@ -1,12 +1,12 @@
 <template>
-	<div @blur="[toggleStyle('outfocus'),search_performed = false]" @focus="toggleStyle('focused')"
+	<div @blur="search_performed = false" @focus="toggleStyle('focused')"
 		 @keydown.enter="subSearch(searchtxt)"
 		 id="searchForm">
 		<div id="form-wrap">
 			<div id="input-wrap" v-bind:class="colorstyle" v-bind:style="{display:'inline'}">
 				<span class="search-logo iconfont iconfangdajing"></span>
 				<input :placeholder="placeholder"
-					   @blur="placeholder = '请输入要查找的关键词'"
+					   @blur="[placeholder = '请输入要查找的关键词',toggleStyle('outfocus'),]"
 					   @focus="[toggleStyle('focused'),search_performed=false]" autocomplete="off" id="searchWord"
 					   maxlength="100"
 					   type="text" v-bind:style="{border:'none'}"
@@ -39,6 +39,13 @@
 </template>
 
 <script>
+	const delay = (function () {
+		let timer = 0;
+		return function (callback, ms) {
+			clearTimeout(timer);
+			timer = setTimeout(callback, ms);
+		};
+	})();
 	export default {
 		name: "searchForm",
 		data() {
@@ -77,31 +84,34 @@
 				if (newval.length >= 1) {
 					this.list_available = true;
 					this.search_performed = true;
-					//search recommend word with newval, then update #recommend element with returned api data
+					// search recommend word with newval, then update #recommend element with returned api data
 					const that = this;
-					// todo:search action should be debounced
-					this.$axios.get('https://i.snssdk.com/search/api/sug/', {
-						params: {keyword: newval}
-					}).then(function (response) {
-						// console.log(response.data);
-						if (response.data && response.data.code === 0) {
-							const total = response.data.total;
-							that.list = response.data.data;
-							if (total === 0) {
-								that.show_len_error = true;
-								that.show_not_found = true;
+					// search action should be debounced
+					delay(async () => {
+						that.$axios.get('https://i.snssdk.com/search/api/sug/', {
+							params: {keyword: newval}
+						}).then(function (response) {
+							// console.log(response.data);
+							if (response.data && response.data.code === 0) {
+								const total = response.data.total;
+								that.list = response.data.data;
+								if (total === 0) {
+									that.show_len_error = true;
+									that.show_not_found = true;
+								} else {
+									that.toggleStyle('succeed')
+								}
 							} else {
-								that.toggleStyle('succeed')
+								that.error_fetching_list = true;
+								that.toggleStyle('failed');
 							}
-						} else {
-							that.error_fetching_list = true;
+						}).catch(function (error) {
+							console.log(error);
+							that.$data.error_fetching_list = true;
 							that.toggleStyle('failed');
-						}
-					}).catch(function (error) {
-						console.log(error);
-						that.$data.error_fetching_list = true;
-						that.toggleStyle('failed');
-					})
+						})
+					}, 500);
+
 				}
 			}
 		},
@@ -151,9 +161,6 @@
 						this.placeholder = '';
 						break;
 				}
-			},
-			debouncedSubSearch() {
-
 			}
 		}
 	}
