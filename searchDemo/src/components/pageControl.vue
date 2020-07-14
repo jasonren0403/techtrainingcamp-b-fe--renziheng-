@@ -43,9 +43,12 @@
 		},
 		watch: {
 			'$route'(to, from) {
-				console.log("[PageControl] From " + from.params.page);
-				console.log("[PageControl] To " + to.params.page);
-				this.$emit('pageChange', to.params.kw || '');
+				console.log("[PageControl - may be modified in searchResult] From " + from.params.page);
+				console.log("[PageControl - may be modified in searchResult] To " + to.params.page);
+				if (to.params.page != from.params.page) {
+					console.log('pageChange emit');
+					this.$emit('pageChange', to.params.kw || '');
+				}
 			}
 		}
 	}

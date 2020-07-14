@@ -78,7 +78,7 @@
 					this.search_performed = true;
 					//search recommend word with newval, then update #recommend element with returned api data
 					const that = this;
-					// search action should be debounced
+					// todo:search action should be debounced
 					this.$axios.get('https://i.snssdk.com/search/api/sug/', {
 						params: {keyword: newval}
 					}).then(function (response) {

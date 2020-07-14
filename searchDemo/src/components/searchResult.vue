@@ -75,8 +75,24 @@
 		watch: {
 			'$route'(to, from) {
 				console.log("[SearchResult] From " + from.params.page);
-				this.fetchResult(to.params.page - 1 || 0);
-				console.log("[SearchResult] new result fetched: page " + to.params.page);
+				if (to.params.page > this.max_page && this.max_page > 1) {
+					to.params.page = this.max_page;
+					this.$router.replace({
+						name: 'search_result',
+						params: {kw: this.keyword, page: this.max_page}
+					});
+				} else if (to.params.page < 1) {
+					to.params.page = 1;
+					this.$router.replace({
+						name: 'search_result',
+						params: {kw: this.keyword, page: 1}
+					});
+				}
+				if (to.params.page !== from.params.page) {
+					this.fetchResult(to.params.page - 1 || 0);
+					console.log("[SearchResult] new result fetched: page " + to.params.page);
+				}
+
 			}
 		}
 	}
