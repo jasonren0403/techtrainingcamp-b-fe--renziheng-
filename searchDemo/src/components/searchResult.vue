@@ -41,11 +41,12 @@
 			fetchResult(offset, kw) {
 				// reset the search results
 				this.msg = "";
-				this.cur_page = 1;
-				this.max_page = 1;
+				// this.cur_page = 1;
+				// this.max_page = 1;
 				const keyword = (this.$route.params.kw === undefined) ? kw : this.$route.params.kw;
-				console.log('[fetchResult] offset: ' + offset + ' keyword: ' + keyword);
+				console.log('[fetchResult] offset: ' + offset + ' keyword: ' + keyword + ' keyword before: ' + this.keyword);
 				const that = this;
+				const changeMax = kw === this.keyword;
 				if (keyword.length > 0) {
 					this.$axios.get('https://i.snssdk.com/search/api/study/', {
 						params: {keyword: keyword, offset: offset}
@@ -57,7 +58,11 @@
 							if (total === 0) {
 								that.msg = '啊这……没有结果显示啊ヾ(ﾟ∀ﾟゞ)，换个别的试试？';
 							} else {
-								that.max_page = Math.ceil(total / 10); //10 results per page
+								if (changeMax) {
+									that.max_page = Math.ceil(total / 10); //10 results per page
+								} else {
+									that.keyword = kw;
+								}
 								that.cur_page = Math.min(offset + 1, that.max_page);
 								document.title = 'searchDemo - ' + keyword + '的搜索结果';
 							}
