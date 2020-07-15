@@ -1,11 +1,13 @@
 <template>
 	<div @pageChange="pageChange" id="searchResult" v-bind:style="{'min-height':'400px'}">
-		<div v-if="result&&result.length > 0" :key="1">
+		<transition-group v-if="result&&result.length > 0" :key="1" tag="div"
+						  id="searchItems" name="fade">
 			<search-result-item :item="data"
 								:key="data.create_time"
-								v-for="data in result">
+								v-for="data in result"
+								style="animation-duration: 0.3s">
 			</search-result-item>
-		</div>
+		</transition-group>
 		<div id="search-msg" v-else :key="2">{{msg}}</div>
 
 		<page-control :cur_page='cur_page' :max_page='max_page'></page-control>
@@ -99,14 +101,6 @@
 </script>
 
 <style scoped>
-	.fadein-enter-active, .fadein-enter {
-		opacity: 0;
-	}
-
-	.fadein-leave, .fadein-leave-active {
-		opacity: 1;
-	}
-
 	#search-msg {
 		margin-top: 1em;
 		position: relative;

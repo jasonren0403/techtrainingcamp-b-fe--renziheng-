@@ -47,6 +47,7 @@
 				console.log("[PageControl - may be modified in searchResult] To " + to.params.page);
 				if (to.params.page != from.params.page) {
 					console.log('pageChange emit');
+					window.scrollTo(0, 0);
 					this.$emit('pageChange', to.params.kw || '');
 				}
 			}
