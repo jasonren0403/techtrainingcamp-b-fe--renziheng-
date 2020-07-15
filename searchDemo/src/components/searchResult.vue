@@ -75,28 +75,16 @@
 		},
 		watch: {
 			'$route'(to, from) {
-				console.log("[SearchResult] From " + from.params.page);
+				console.log("[SearchResult] From " + from.params.page +
+					" To " + to.params.page + " max " + this.max_page);
 				let toPage = to.params.page;
 				let fromPage = from.params.page;
-				if (toPage > this.max_page && this.max_page > 1) {
-					toPage = this.max_page;
-					this.$router.replace({
-						name: 'search_result',
-						params: {kw: this.keyword, page: this.max_page}
-					});
-					// this.fetchResult(to.params.page - 1); No need to fetch again
-				} else if (toPage < 1) {
-					toPage = 1;
-					this.$router.replace({
-						name: 'search_result',
-						params: {kw: this.keyword, page: 1}
-					});
-					// this.fetchResult(0); No need to fetch again
-				} else {
+				if (toPage <= this.max_page && toPage >= 1) {
 					this.fetchResult(toPage - 1, to.params.keyword);
 					console.log("[SearchResult] new result fetched: page " + to.params.page);
+					return;
 				}
-
+				this.$router.back();
 			},
 			keyword(newval, oldval) {
 				if (newval !== undefined && newval.length > 0) {

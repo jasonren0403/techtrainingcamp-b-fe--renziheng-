@@ -5,7 +5,9 @@
 				<span class="small">&nbsp;&nbsp;详情...</span>
 			</a>
 		</h3>
-		<div class="abstract">{{item.description}}</div>
+		<div class="abstract" v-bind:class="item.description.length===0?'no-abstract':''">{{item.description ||
+			'该网页暂无简介'}}
+		</div>
 		<div class="other_info">
 			<span class="info-span user">
 				<span class="iconfont iconline-user"></span>
@@ -160,6 +162,11 @@
 		-ms-text-align-last: left;
 		text-align: justify;
 		-moz-text-align-last: left;
+	}
+
+	.no-abstract {
+		font-weight: 200;
+		font-size: 0.8em;
 	}
 
 	#result_item {

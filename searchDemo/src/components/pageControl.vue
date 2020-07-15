@@ -2,17 +2,17 @@
 	<div id="page-controls-wrapper" ref="control">
 		<div id="page-controls">
 			<router-link :to="{name:'search_result',params:{kw:current_kw,page:1}}">
-				<span class="iconfont icondiyiye" v-bind:class="[cur_page===1?'disabled-page-control':'']"></span>
+				<span class="iconfont icondiyiye" v-bind:class="[cur_page<=1?'disabled-page-control':'']"></span>
 			</router-link>
 			<router-link :to="{name:'search_result',params:{kw:current_kw,page:cur_page-1}}"><span
 				class="iconfont iconzuojiantou"
-				v-bind:class="[cur_page===1?'disabled-page-control':'']"></span></router-link>
+				v-bind:class="[cur_page<=1?'disabled-page-control':'']"></span></router-link>
 			<span>第{{cur_page}}页/共{{max_page}}页</span>
 			<router-link :to="{name:'search_result',params:{kw:current_kw,page:cur_page+1}}"><span
 				class="iconfont iconyoujiantou"
-				v-bind:class="[cur_page===max_page?'disabled-page-control':'']"></span></router-link>
+				v-bind:class="[cur_page>=max_page?'disabled-page-control':'']"></span></router-link>
 			<router-link :to="{name:'search_result',params:{kw:current_kw,page:max_page}}"><span
-				class="iconfont iconzuihouyiye" v-bind:class="[cur_page===max_page?'disabled-page-control':'']"></span>
+				class="iconfont iconzuihouyiye" v-bind:class="[cur_page>=max_page?'disabled-page-control':'']"></span>
 			</router-link>
 		</div>
 	</div>
@@ -43,8 +43,6 @@
 		},
 		watch: {
 			'$route'(to, from) {
-				console.log("[PageControl - may be modified in searchResult] From " + from.params.page);
-				console.log("[PageControl - may be modified in searchResult] To " + to.params.page);
 				if (to.params.page != from.params.page && to.params.page <= this.max_page && to.params.page >= 1) {
 					console.log('pageChange emit');
 					window.scrollTo(0, 0);
