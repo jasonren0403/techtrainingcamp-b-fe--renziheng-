@@ -1,12 +1,11 @@
 <template>
-	<div @blur="search_performed = false" @focus="toggleStyle('focused')"
+	<div @blur="[search_performed = false,placeholder = '请输入要查找的关键词']" @focus="toggleStyle('focused')"
 		 @keydown.enter="subSearch(searchtxt)"
 		 id="searchForm">
 		<div id="form-wrap">
 			<div id="input-wrap" v-bind:class="colorstyle" v-bind:style="{display:'inline'}">
 				<span class="search-logo iconfont iconfangdajing"></span>
 				<input :placeholder="placeholder"
-					   @blur="[placeholder = '请输入要查找的关键词',toggleStyle('outfocus'),]"
 					   @focus="[toggleStyle('focused'),search_performed=false]" autocomplete="off" id="searchWord"
 					   maxlength="100"
 					   type="text" v-bind:style="{border:'none'}"
@@ -123,6 +122,7 @@
 				this.list = [];
 				this.list_available = false;
 				if (typeof kw != 'undefined' && kw.length !== 0) {
+					console.log('submitted: ' + kw);
 					this.toggleStyle('succeed');
 					this.searchtxt = '';
 					this.$router.push({

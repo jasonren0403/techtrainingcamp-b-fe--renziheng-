@@ -45,7 +45,7 @@
 			'$route'(to, from) {
 				console.log("[PageControl - may be modified in searchResult] From " + from.params.page);
 				console.log("[PageControl - may be modified in searchResult] To " + to.params.page);
-				if (to.params.page != from.params.page) {
+				if (to.params.page != from.params.page && to.params.page <= this.max_page && to.params.page >= 1) {
 					console.log('pageChange emit');
 					window.scrollTo(0, 0);
 					this.$emit('pageChange', to.params.kw || '');

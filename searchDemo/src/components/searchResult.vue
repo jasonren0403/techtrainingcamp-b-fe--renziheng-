@@ -1,14 +1,14 @@
 <template>
 	<div @pageChange="pageChange" id="searchResult" v-bind:style="{'min-height':'400px'}">
-		<transition-group v-if="result&&result.length > 0" :key="1" tag="div"
-						  id="searchItems" name="fade">
+		<transition-group :key="1" id="searchItems" name="fade"
+						  tag="div" v-if="result&&result.length > 0">
 			<search-result-item :item="data"
 								:key="data.create_time"
-								v-for="data in result"
-								style="animation-duration: 0.3s">
+								style="animation-duration: 0.3s"
+								v-for="data in result">
 			</search-result-item>
 		</transition-group>
-		<div id="search-msg" v-else :key="2">{{msg}}</div>
+		<div :key="2" id="search-msg" v-else>{{msg}}</div>
 
 		<page-control :cur_page='cur_page' :max_page='max_page'></page-control>
 	</div>
@@ -17,7 +17,6 @@
 <script>
 	const searchResultItem = () => import( "./searchResultItem");
 	const pageControl = () => import( "./pageControl");
-
 	export default {
 		name: "search-result",
 		components: {
@@ -26,8 +25,8 @@
 		created() {
 			console.log('loading');
 			const offset = Number(this.$route.params.page) - 1 || 0;
-			this.fetchResult(offset);
 			this.keyword = (this.$route.params.kw === undefined) ? '' : this.$route.params.kw;
+			this.fetchResult(offset, this.keyword);
 		},
 		data() {
 			return {
@@ -39,13 +38,13 @@
 			}
 		},
 		methods: {
-			fetchResult(offset) {
+			fetchResult(offset, kw) {
 				// reset the search results
 				this.msg = "";
 				this.cur_page = 1;
 				this.max_page = 1;
-				console.log('[fetchResult] offset: ' + offset);
-				const keyword = (this.$route.params.kw === undefined) ? '' : this.$route.params.kw;
+				const keyword = (this.$route.params.kw === undefined) ? kw : this.$route.params.kw;
+				console.log('[fetchResult] offset: ' + offset + ' keyword: ' + keyword);
 				const that = this;
 				if (keyword.length > 0) {
 					this.$axios.get('https://i.snssdk.com/search/api/study/', {
@@ -70,31 +69,41 @@
 				}
 			},
 			pageChange(page, keyword) {
-				console.log('received emit pageChange from &lt;pageControl&gt;');
+				console.log("[pageChange] " + page + " " + keyword);
 				this.fetchResult(page - 1 || 0);
 			}
 		},
 		watch: {
 			'$route'(to, from) {
 				console.log("[SearchResult] From " + from.params.page);
-				if (to.params.page > this.max_page && this.max_page > 1) {
-					to.params.page = this.max_page;
+				let toPage = to.params.page;
+				let fromPage = from.params.page;
+				if (toPage > this.max_page && this.max_page > 1) {
+					toPage = this.max_page;
 					this.$router.replace({
 						name: 'search_result',
 						params: {kw: this.keyword, page: this.max_page}
 					});
-				} else if (to.params.page < 1) {
-					to.params.page = 1;
+					// this.fetchResult(to.params.page - 1); No need to fetch again
+				} else if (toPage < 1) {
+					toPage = 1;
 					this.$router.replace({
 						name: 'search_result',
 						params: {kw: this.keyword, page: 1}
 					});
-				}
-				if (to.params.page !== from.params.page) {
-					this.fetchResult(to.params.page - 1 || 0);
+					// this.fetchResult(0); No need to fetch again
+				} else {
+					this.fetchResult(toPage - 1, to.params.keyword);
 					console.log("[SearchResult] new result fetched: page " + to.params.page);
 				}
 
+			},
+			keyword(newval, oldval) {
+				if (newval !== undefined && newval.length > 0) {
+					console.log(newval);
+					// console.log(this.$route.params);
+					this.fetchResult(this.$route.params.page - 1 || 0, newval);
+				}
 			}
 		}
 	}
