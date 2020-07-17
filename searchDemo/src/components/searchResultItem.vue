@@ -29,7 +29,8 @@
 		<div class="clearfix"></div>
 		<div class="tags" v-if="item.tags && item.tags.length!==0">
 			<div class="badge-wrapper" v-for="tag in item.tags">
-				<span class="badge-basic" v-bind:class="[special.badges.find(v=>v === tag)?'badge-green':'badge']">{{tag}}</span>
+				<span class="badge-basic"
+					  v-bind:class="[special.badges.find(v=>v === tag.toLowerCase())?'badge-green':'badge']">{{tag}}</span>
 			</div>
 		</div>
 		<div class="clearfix"></div>
@@ -50,8 +51,8 @@
 				special: {
 					// 这里放彩蛋！
 					// badges - 标签含有特定值时，显示将与其他标签不同
-					"badges": ["任子恒", "Jason Ren", "Vue.js", "Vue", "HTML5",
-						"CSS3", "CSS 3", "JavaScript", "javascript", "字节跳动", "bytedance", "Bytedance"],
+					"badges": ["任子恒", "Jason Ren", "vue.js", "vue", "HTML5", "css",
+						"css3", "css 3", "javascript", "字节跳动", "bytedance"],
 					// 有时间我就放这个↓
 					// "badges":{
 					// 	"badge-green":["任子恒","Jason Ren"],

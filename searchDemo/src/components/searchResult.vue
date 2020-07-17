@@ -11,6 +11,10 @@
 		<div :key="2" id="search-msg" v-else>{{msg}}</div>
 
 		<page-control :cur_page='cur_page' :max_page='max_page'></page-control>
+		<div class="back-area">
+			<span class="area-wrapper"><router-link :to="{name:'home'}"><span
+				class="iconfont iconfanhui"></span>&nbsp;&nbsp;返回到主页</router-link></span>
+		</div>
 	</div>
 </template>
 
@@ -103,6 +107,18 @@
 </script>
 
 <style scoped>
+	.back-area {
+		margin: 1em auto;
+	}
+
+	.area-wrapper {
+		padding: 5px 10px;
+		border: none;
+		border-radius: 5px;
+		background-color: #b6bca5;
+		box-shadow: #ddd9c3;
+	}
+
 	#search-msg {
 		margin-top: 1em;
 		position: relative;

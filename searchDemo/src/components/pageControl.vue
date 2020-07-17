@@ -45,7 +45,12 @@
 			'$route'(to, from) {
 				if (to.params.page != from.params.page && to.params.page <= this.max_page && to.params.page >= 1) {
 					console.log('pageChange emit');
-					window.scrollTo(0, 0);
+					this.$nextTick(() => {
+						window && window.scrollTo({
+							top: 0,
+							behavior: "smooth"
+						})
+					})
 					this.$emit('pageChange', to.params.kw || '');
 				}
 			}

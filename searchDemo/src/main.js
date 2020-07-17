@@ -4,9 +4,6 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
-import animate from 'animate.css'
-
-Vue.use(animate)
 
 Vue.prototype.$axios = axios;
 Vue.config.productionTip = false
@@ -20,5 +17,3 @@ new Vue({
 })
 
 require('vue2-animate/dist/vue2-animate.min.css')
-
-// optimization - throttling and debouncing function is going to be extracted from Vue components
