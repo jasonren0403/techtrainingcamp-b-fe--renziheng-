@@ -45,7 +45,9 @@
 			'$route'(to, from) {
 				if (to.params.page != from.params.page && to.params.page <= this.max_page && to.params.page >= 1) {
 					console.log('pageChange emit');
+					const that = this;
 					this.$nextTick(() => {
+						that.$smoothscroll.polyfill();
 						window && window.scrollTo({
 							top: 0,
 							behavior: "smooth"

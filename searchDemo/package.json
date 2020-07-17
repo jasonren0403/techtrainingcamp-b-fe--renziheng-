@@ -12,6 +12,7 @@
 		"build": "node build/build.js"
 	},
 	"dependencies": {
+		"smoothscroll-polyfill": "^0.4.4",
 		"vue": "^2.5.2",
 		"vue-router": "^3.0.1",
 		"vue2-animate": "^2.1.3"

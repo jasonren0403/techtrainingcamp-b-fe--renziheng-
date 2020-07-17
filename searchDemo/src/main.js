@@ -4,8 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
+import smoothscroll from 'smoothscroll-polyfill';
 
 Vue.prototype.$axios = axios;
+Vue.prototype.$smoothscroll = smoothscroll;
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
