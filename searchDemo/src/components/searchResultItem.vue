@@ -138,6 +138,7 @@
 	}
 
 	.badge-wrapper {
+		padding-top: 4px;
 		margin: 0 0.2em;
 		float: left;
 	}

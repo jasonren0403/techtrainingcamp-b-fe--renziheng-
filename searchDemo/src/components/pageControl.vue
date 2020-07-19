@@ -66,6 +66,7 @@
 							behavior: "smooth"
 						})
 					})
+					if (this.cur_page !== to.params.page) this.$set('cur_page', to.params.page);
 					this.$emit('pageChange', to.params.kw || '');
 				}
 			}
