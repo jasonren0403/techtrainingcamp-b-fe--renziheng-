@@ -15,6 +15,14 @@
 				class="iconfont iconzuihouyiye" v-bind:class="[cur_page>=max_page?'disabled-page-control':'']"></span>
 			</router-link>
 		</div>
+		<div class="page-jump">
+			<p>快速到第<input :max="max_page" :placeholder="cur_page" :style="{width:'4em'}"
+						  @keydown.enter="perform_jump(jump_page)" min="1"
+						  type="number"
+						  v-model="jump_page"/>页
+				<button :style="{'margin-left':'0.4em'}" @click="perform_jump(jump_page)">Go</button>
+			</p>
+		</div>
 	</div>
 </template>
 
@@ -27,6 +35,11 @@
 				required: true,
 				default: 1
 			},
+		},
+		data() {
+			return {
+				jump_page: this.cur_page
+			}
 		},
 		computed: {
 			current_kw() {
@@ -55,6 +68,15 @@
 					})
 					this.$emit('pageChange', to.params.kw || '');
 				}
+			}
+		},
+		methods: {
+			perform_jump(goal_page) {
+				if (this.cur_page !== goal_page)
+					this.$router.push({
+						name: 'search_result',
+						params: {kw: this.current_kw, page: goal_page}
+					})
 			}
 		}
 	}
