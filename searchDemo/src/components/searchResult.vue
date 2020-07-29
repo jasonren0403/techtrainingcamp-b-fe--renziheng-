@@ -28,9 +28,9 @@
 		},
 		created() {
 			console.log('loading');
-			const offset = Number(this.$route.params.page) - 1 || 0;
+			const page = Number(this.$route.params.page) - 1 || 0;
 			this.keyword = (this.$route.params.kw === undefined) ? '' : this.$route.params.kw;
-			this.fetchResult(offset, this.keyword);
+			this.fetchResult(page, this.keyword);
 		},
 		data() {
 			return {
@@ -42,15 +42,16 @@
 			}
 		},
 		methods: {
-			fetchResult(offset, kw) {
+			fetchResult(page, kw) {
 				// reset the search results
 				this.msg = "";
 				// this.cur_page = 1;
 				// this.max_page = 1;
 				const keyword = (this.$route.params.kw === undefined) ? kw : this.$route.params.kw;
-				console.log('[fetchResult] offset: ' + offset + ' keyword: ' + keyword + ' keyword before: ' + this.keyword);
+				console.log('[fetchResult] offset: ' + page + ' keyword: ' + keyword + ' keyword before: ' + this.keyword);
 				const that = this;
 				const changeMax = kw === this.keyword;
+				const offset = page * 10;
 				if (keyword.length > 0) {
 					this.$axios.get('https://i.snssdk.com/search/api/study/', {
 						params: {keyword: keyword, offset: offset}
