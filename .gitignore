@@ -198,5 +198,4 @@ out
 gen
 .idea/
 bin/
-package-lock.json
 
