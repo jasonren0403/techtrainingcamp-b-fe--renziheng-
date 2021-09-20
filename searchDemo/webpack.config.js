@@ -2,23 +2,30 @@ const path = require('path')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
-const {VueLoaderPlugin} = require('vue-loader')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const VueLoaderPlugin = require('vue-loader-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const isProd = process.env.NODE_ENV === 'production'
 
 const config = {
-	entry: ['@babel/polyfill', './src/main.js'],
+	entry: './src/main.js',
+	target: process.env.NODE_ENV = "production" ? "browserslist" : "web",
 	devServer: {
-		'static': path.join(__dirname, 'dist'), // html所在路径
-		compress: true, // 是否压缩
-		port: 3000, // 端口
-		hot: true, // 热部署
-		open: true, // 打包完成后自动打开网页
+		static: {
+			publicPath: '/'
+		},
+		compress: true,
+		hot: true
 	},
 	output: {
-		filename: '[name].[chunkhash:8].js',
-		path: path.join(__dirname, 'dist'),
-		publicPath: './'
+		filename: '[name].[chunkhash:8].bundle.js',
+		path: path.resolve(__dirname, 'dist'),
+		publicPath: './',
+		clean: true
+	},
+	externals: {
+		'vue': 'Vue',
+		'vue-router': 'VueRouter',
 	},
 	resolve: {
 		extensions: ['.js', '.vue'],
@@ -30,7 +37,6 @@ const config = {
 	module: {
 		rules: [
 			{
-				// *.js
 				test: /\.js$/,
 				exclude: /node_modules/, // 不编译node_modules下的文件
 				loader: 'babel-loader',
@@ -81,6 +87,14 @@ const config = {
 			filename: 'index.html',
 			template: 'public/index.html',
 			favicon: 'public/favicon.ico'
+		}),
+		new CopyWebpackPlugin({
+			patterns: [
+				{
+					from: path.join(__dirname, 'static'),
+					to: 'static'
+				}
+			]
 		})
 	],
 	optimization: {
@@ -92,10 +106,12 @@ const config = {
 				},
 			}),
 		],
+		moduleIds: 'deterministic',
+		usedExports: true,
+		runtimeChunk: "single",
 		splitChunks: {
 			chunks: 'all'
 		},
-		moduleIds: 'deterministic'
 	}
 }
 if (!isProd) {
@@ -104,7 +120,7 @@ if (!isProd) {
 	config.plugins.push(
 		// 分离单独的 CSS 文件到 output
 		new MiniCssExtractPlugin({
-			filename: 'style.css',
+			filename: '[name].[hash].css',
 		})
 	)
 }
