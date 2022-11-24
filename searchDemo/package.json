@@ -11,7 +11,7 @@
 	},
 	"dependencies": {
 		"@babel/polyfill": "^7.12.1",
-		"@vue/cli": "^4.4.6",
+		"@vue/cli": "^5.0.8",
 		"smoothscroll-polyfill": "^0.4.4",
 		"vue": "^2.7.14",
 		"vue-router": "^3.6.5",
