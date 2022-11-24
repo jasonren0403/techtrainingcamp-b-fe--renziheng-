@@ -10,8 +10,8 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: "[name].[contenthash:8].js",
-        chunkFilename: "[name].[contenthash:8].js",
+        filename: "js/[name].[contenthash:8].js",
+        chunkFilename: "js/[name].[contenthash:8].js",
     },
 	externals: {
 		vue: 'Vue',
@@ -34,7 +34,8 @@ module.exports = {
                 test: /\.(eot|ttf|woff|woff2)(\?\S*)?$/,
                 loader: "file-loader",
                 options: {
-                    name: "[name][contenthash:8].[ext]",
+					outputPath: "fonts",
+                    name: "[name]-[contenthash:8].[ext]",
                 },
             },
             {
@@ -43,7 +44,7 @@ module.exports = {
                 options: {
                     outputPath: "assets",
                     esModule: false,
-                    name: "[name][contenthash:8].[ext]",
+                    name: "[name]-[contenthash:8].[ext]",
                 },
             },
             {

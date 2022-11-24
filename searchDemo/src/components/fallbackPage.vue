@@ -23,6 +23,12 @@
 		cursor: pointer;
 	}
 
+	.btn:hover{
+		background-color: rgba(201,245,233,0.79);
+		color: #2c3e50;
+		animation: 1s ease-in;
+	}
+
 	.btn-active {
 		background-color: blue;
 		color: white;

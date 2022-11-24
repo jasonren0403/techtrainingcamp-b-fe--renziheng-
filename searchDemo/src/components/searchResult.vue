@@ -116,8 +116,11 @@
 		padding: 5px 10px;
 		border: none;
 		border-radius: 5px;
-		background-color: #b6bca5;
-		box-shadow: #ddd9c3;
+	}
+
+	.area-wrapper:hover{
+		background-color: rgba(0,245,143,0.79);
+		animation: 1s ease-in;
 	}
 
 	#search-msg {

@@ -4,6 +4,8 @@ import router from './router'
 import axios from 'axios'
 import smoothscroll from 'smoothscroll-polyfill'
 
+import '../static/font/iconfont.css'
+
 Vue.prototype.$axios = axios.create({
 	baseURL: '',
 	timeout: 30 * 1000

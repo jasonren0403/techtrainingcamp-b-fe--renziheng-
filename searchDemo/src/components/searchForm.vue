@@ -317,6 +317,11 @@
 		outline: none;
 	}
 
+	#search_button:hover{
+		background-color: rgba(2,150,245,0.79);
+		animation: 1s ease-in;
+	}
+
 	@media screen and (max-width: 361px) {
 		.list-wrapper > ul {
 			width: 175px;
