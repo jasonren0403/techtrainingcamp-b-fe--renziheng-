@@ -1,4 +1,7 @@
 # techtrainingcamp-proj-2020
+
+![](README.assets/main-page.png)
+
 本作品为“玩转前端——北邮”的大作业项目
 * 本项目的代码由作者[@Jason_Ren](https://github.com/jasonren0403) 全部自行编写，此仓库为项目代码库
 
@@ -34,6 +37,7 @@
     - `fallback`，不满足以上条件时进入404页面
     
 ### 交互设计
+![](README.assets/image11.gif)
 * 搜索框
     - 使用动态绑定的`placeholder`变量设置`input`的内容占位符，这样可以根据不同的上下文给出不同的提示，同时，搜索框的外观也有相应变化
     - 推荐词框可以使用键盘上下键切换当前所选
