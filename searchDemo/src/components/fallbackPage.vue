@@ -7,30 +7,30 @@
 </template>
 
 <script>
-	export default {
-		name: "fallback",
-		mounted() {
-			document.title = 'searchDemo - 你来到了一个不存在的页面'
-		}
+export default {
+	name: "fallback",
+	mounted() {
+		document.title = 'searchDemo - 你来到了一个不存在的页面'
 	}
+}
 </script>
 
 <style scoped>
-	.btn {
-		border-radius: 8px;
-		padding: 0.4em;
-		margin: 0.2em;
-		cursor: pointer;
-	}
+.btn {
+	border-radius: 8px;
+	padding: 0.4em;
+	margin: 0.2em;
+	cursor: pointer;
+}
 
-	.btn:hover{
-		background-color: rgba(201,245,233,0.79);
-		color: #2c3e50;
-		animation: 1s ease-in;
-	}
+.btn:hover {
+	background-color: rgba(201, 245, 233, 0.79);
+	color: #2c3e50;
+	animation: 1s ease-in;
+}
 
-	.btn-active {
-		background-color: blue;
-		color: white;
-	}
+.btn-active {
+	background-color: blue;
+	color: white;
+}
 </style>
